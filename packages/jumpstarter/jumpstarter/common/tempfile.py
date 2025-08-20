@@ -1,17 +1,16 @@
-from contextlib import asynccontextmanager, contextmanager, nullcontext
+from contextlib import asynccontextmanager, nullcontext
 from os import PathLike
 from pathlib import Path
 from socket import AddressFamily
-from tempfile import TemporaryDirectory
 
-from anyio import create_task_group, create_tcp_listener, create_unix_listener
+from anyio import TemporaryDirectory, create_task_group, create_tcp_listener, create_unix_listener
 from anyio.abc import SocketAttribute
 from xdg_base_dirs import xdg_runtime_dir
 
 
-@contextmanager
-def TemporarySocket():
-    with TemporaryDirectory(dir=xdg_runtime_dir(), prefix="jumpstarter-") as tempdir:
+@asynccontextmanager
+async def TemporarySocket():
+    async with TemporaryDirectory(dir=xdg_runtime_dir(), prefix="jumpstarter-") as tempdir:
         yield Path(tempdir) / "socket"
 
 
@@ -22,7 +21,7 @@ async def TemporaryUnixListener(handler, path: PathLike | None = None):
     else:
         cm = TemporarySocket()
 
-    with cm as path:
+    async with cm as path:
         async with await create_unix_listener(path) as listener:
             async with create_task_group() as tg:
                 tg.start_soon(listener.serve, handler, tg)

@@ -73,7 +73,7 @@ class Session(
 
     @asynccontextmanager
     async def serve_unix_async(self):
-        with TemporarySocket() as path:
+        async with TemporarySocket() as path:
             async with self.serve_port_async(f"unix://{path}"):
                 yield path
 
