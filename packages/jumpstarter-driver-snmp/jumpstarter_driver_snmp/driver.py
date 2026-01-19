@@ -115,10 +115,6 @@ class SNMPServer(PowerInterface, Driver):
 
         return snmp_engine
 
-    @classmethod
-    def client(cls) -> str:
-        return "jumpstarter_driver_snmp.client.SNMPServerClient"
-
     def _create_snmp_callback(self, result: Dict[str, Any], response_received: Event):
         def callback(snmpEngine, sendRequestHandle, errorIndication, errorStatus, errorIndex, varBinds, cbCtx):
             self.logger.debug(f"Callback {errorIndication} {errorStatus} {errorIndex} {varBinds}")
