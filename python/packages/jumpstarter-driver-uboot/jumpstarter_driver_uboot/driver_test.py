@@ -15,7 +15,7 @@ from jumpstarter.common.utils import serve
 def uboot_image(tmpdir_factory):
     tmp_path = tmpdir_factory.mktemp("uboot-images")
 
-    url = "https://kojipkgs.fedoraproject.org/packages/uboot-tools/2024.10/1.fc41/noarch/uboot-images-armv8-2024.10-1.fc41.noarch.rpm"
+    url = "https://kojipkgs.fedoraproject.org/packages/uboot-tools/2025.10/1.fc43/noarch/uboot-images-armv8-2025.10-1.fc43.noarch.rpm"
 
     with requests.get(url, stream=True) as r:
         r.raise_for_status()
